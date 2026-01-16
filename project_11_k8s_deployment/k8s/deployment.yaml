@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: langgraph-app
+  namespace: langgraph-safety
+  labels:
+    app: langgraph-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: langgraph-app
+  template:
+    metadata:
+      labels:
+        app: langgraph-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: langgraph-app
+          image: langgraph-safety:latest
+          imagePullPolicy: Never  # Use local image built in Rancher/Docker
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: langgraph-config
+            - secretRef:
+                name: langgraph-secrets
+          volumeMounts:
+            - name: logs-storage
+              mountPath: /var/log/app
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: logs-storage
+          persistentVolumeClaim:
+            claimName: logs-pvc

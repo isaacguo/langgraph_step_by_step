@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: langgraph-safety
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+    
+    scrape_configs:
+      - job_name: 'langgraph-app'
+        metrics_path: '/metrics'
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names:
+                - langgraph-safety
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            action: keep
+            regex: langgraph-app
+          - source_labels: [__meta_kubernetes_pod_ip]
+            action: replace
+            target_label: __address__
+            replacement: $1:8000
+          - source_labels: [__meta_kubernetes_namespace]
+            target_label: kubernetes_namespace
+          - source_labels: [__meta_kubernetes_pod_name]
+            target_label: kubernetes_pod_name
