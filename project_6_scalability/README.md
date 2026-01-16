@@ -1,32 +1,34 @@
-# Project 6: Scalability & Resource Management
+# Project 6: Scalability & Performance
 
 ## Overview
-Learn strategies for scaling LangGraph applications and managing resources efficiently.
+This project covers scalability patterns and performance optimization techniques for LangGraph applications, including parallel processing, async operations, and batch processing.
 
 ## Concepts Covered
-- Parallel processing
-- Batch operations
-- Resource pooling
-- Rate limiting
-- Caching strategies
+- Async parallel processing
+- Batch processing patterns
+- Concurrent task execution
 - Performance optimization
-- Load balancing
+- Resource management
 
 ## Files
-- `01_parallel_processing.py` - Parallel execution patterns
-- `02_batch_operations.py` - Batch processing
-- `03_rate_limiting.py` - Rate limiting strategies
-- `04_caching.py` - Caching for performance
-- `05_resource_optimization.py` - Resource optimization
+- `01_parallel_processing.py` - Parallel processing patterns (async, batch processing)
 
 ## Running Examples
 
 ```bash
-conda activate langgraph_exec
+conda activate arxiv-paper
 cd project_6_scalability
 python 01_parallel_processing.py
 ```
 
 ## Prerequisites
-Complete Projects 1-5 before starting this project.
+- Complete Projects 1-5
+- Understanding of async/await in Python
+- Knowledge of parallel processing concepts
 
+## Key Learning Points
+- Implementing async operations in nodes
+- Processing multiple tasks in parallel
+- Batch processing for efficiency
+- Optimizing workflow performance
+- Managing concurrent operations
